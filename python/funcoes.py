@@ -1,6 +1,5 @@
 from random import randint
 
-
 def letra_numero(frase): #converte as letras em números segundo a convenção do algortimo e retorna um array com estes
     frasen = []
 
@@ -62,7 +61,7 @@ def letra_numero(frase): #converte as letras em números segundo a convenção d
     return frasen
 
 
-def numero_letra(numeros): #converte o o número em letra segundo a convenção do algoritmo
+def numero_letra(numeros): #converte os números em letras segundo a convenção do algoritmo e retorna um array com estas
     convertido = []
     for i in range(0, len(numeros)):
         if numeros[i] == 2:
@@ -121,6 +120,9 @@ def numero_letra(numeros): #converte o o número em letra segundo a convenção 
             convertido.append(" ")
     return convertido
 
+def fermat(a, expoente, m):
+    novo = expoente % (m-1)
+    return (a**novo) % m
 
 def inverso(a, m): #calcula e retorna o inverso de a mod m
     for d in range(1, m):
@@ -148,12 +150,13 @@ def primo(num): #decide se um dado número é primo ou não
     for i in range(1, num+1):
         if num % i == 0:
             cont += 1
-    
     if cont > 2:
         return False
     else:
         return True
 
+
+# a partir daqui, as funções chamadas no menu
 
 def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
     print("""[1] Gerar os números primos aleatoriamente
@@ -161,13 +164,14 @@ def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
     opcaoprim = int(input("Sua opção: "))
 
     if (opcaoprim == 1): #gera primos automaticamente dentro de um intervalo
-        p = randint(2, 999)
+        p = randint(2, 2000)
         while (not primo(p)):
-            p = randint(2, 999)
+            p = randint(2, 2000)
 
-        q = randint(2, 999)
+        q = randint(2, 2000)
         while (not primo(q) or q == p):
-            q = randint(2, 999)  
+            q = randint(2, 2000)
+        print("p e q gerados")  
     
     elif (opcaoprim == 2): #o usuário insere os números
         p = int(input("Insira o primo p: "))
@@ -180,11 +184,21 @@ def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
         
     
     #agora que temos os primos P e Q, podemos encontrar n e a funcao totiente:
-    print("Gerando n...")
     n = p * q
     totiente = (p - 1) * (q - 1)
-    # e é um valor arbitrário entre 1 e a totiente, relativamente primo a esta     
-    e = gerar_e(totiente) #temos as chaves públicas
+    # e é um valor arbitrário entre 1 e a totiente, relativamente primo a esta
+    print("[1] Gerar e aleatoriamente\n[2] Inserir um valor para e")
+    op = int(input("Sua opção: "))
+    
+    if (op == 1):
+        e = gerar_e(totiente)
+        print("Valor de e gerado")
+    else:
+        e = int(input("Insira e: "))
+        while (mdc(e, totiente) != 1): # caso o valor inserido não seja relativamente primo ao totiente
+            e = int(input("Número inválido! Insira e: "))
+         
+    
     d = inverso(e, totiente) #para a chave privada, precisamos do inverso de e mod totiente;
     
     pub = open('chaves.txt',  'w')
@@ -193,7 +207,7 @@ def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
     print("Chaves adicionadas ao arquivo 'chaves.txt'")
 
 
-def encriptar():
+def encriptar(): # encripta uma mensagem com base na chave gerada quando opção no menu é 2
     frase = str(input("Insira a frase a ser encripitada: "))
     convert = letra_numero(frase) #temos a frase pré-codificada, convertida em números
     print("Insira a chave pública (se já foi gerada, está em 'chaves.txt'): ")
@@ -203,8 +217,8 @@ def encriptar():
     encrip = open('encriptada.txt', 'w')
    
     for i in range(len(convert)):
-        convert[i] = ((convert[i]**e) % n) #numero elevado a E mod N: encriptando a mensagem
-        if (i < len(convert)):
+        convert[i] = fermat(convert[i], e, n) #numero elevado a E mod N: encriptando a mensagem
+        if (i < len(convert)):  #escrevendo no txt
             if (i != len(convert)):
                 encrip.write(f"{convert[i]} ")
             else:
@@ -225,12 +239,12 @@ def decriptar():
     n = p * q
 
     for c in range(0, len(msg)):
-        msg[c] = ((msg[c] ** d) % n) #decriptando...
+        msg[c] = fermat(msg[c], d, n) #decriptando a mensagem
 
     decriptada = numero_letra(msg)
     arquivo = open('decriptada.txt', 'w')
     for i in range(0, len(decriptada)):
-        arquivo.write(decriptada[i])
+        arquivo.write(decriptada[i]) #escrevendo no txt
     arquivo.close()
     
     print("A mensagem decriptada foi armazenada em 'decriptada.txt'")
