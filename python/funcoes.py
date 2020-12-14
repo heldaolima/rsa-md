@@ -164,13 +164,13 @@ def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
     opcaoprim = int(input("Sua opção: "))
 
     if (opcaoprim == 1): #gera primos automaticamente dentro de um intervalo
-        p = randint(2, 2000)
+        p = randint(2, 999)
         while (not primo(p)):
-            p = randint(2, 2000)
+            p = randint(2, 999)
 
-        q = randint(2, 2000)
+        q = randint(2, 999)
         while (not primo(q) or q == p):
-            q = randint(2, 2000)
+            q = randint(2, 999)
         print("p e q gerados")  
     
     elif (opcaoprim == 2): #o usuário insere os números
