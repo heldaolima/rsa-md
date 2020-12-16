@@ -1,5 +1,14 @@
 from random import randint
 
+"""
+EQUIPE:
+    Diogo Henrique de Oliveira Cardoso
+    Hélder Silva Ferreira Lima
+    Thiago Henrique de Oliveira Figueiredo
+    Thiago Lobo Pereira Barros
+"""
+
+
 def letra_numero(frase): #converte as letras em números segundo a convenção do algortimo e retorna um array com estes
     frasen = []
 
@@ -120,9 +129,11 @@ def numero_letra(numeros): #converte os números em letras segundo a convenção
             convertido.append(" ")
     return convertido
 
+
 def fermat(a, expoente, m):
     novo = expoente % (m-1)
     return (a**novo) % m
+
 
 def inverso(a, m): #calcula e retorna o inverso de a mod m
     for d in range(1, m):
@@ -159,8 +170,7 @@ def primo(num): #decide se um dado número é primo ou não
 # a partir daqui, as funções chamadas no menu
 
 def gerar_chaves(): #gera as chaves, caso a opção no menu seja 1
-    print("""[1] Gerar os números primos aleatoriamente
-[2] Inserir os números primos""")
+    print("[1] Gerar os números primos aleatoriamente\n[2] Inserir os números primos")
     opcaoprim = int(input("Sua opção: "))
 
     if (opcaoprim == 1): #gera primos automaticamente dentro de um intervalo

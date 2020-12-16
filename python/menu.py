@@ -1,5 +1,14 @@
 from funcoes import * #importa as funções do arquivo 'funcoes.py'
 
+"""
+EQUIPE:
+    Diogo Henrique de Oliveira Cardoso
+    Hélder Silva Ferreira Lima
+    Thiago Henrique de Oliveira Figueiredo
+    Thiago Lobo Pereira Barros
+"""
+
+
 opcao = ' '
 print("--- CRIPTOGRAFIA RSA ---")
 
